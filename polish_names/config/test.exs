@@ -9,6 +9,7 @@ config :polish_names, PolishNames.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
+  port: "8011",
   database: "polish_names_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
@@ -25,3 +26,9 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :modular,
+  area_mocking_enabled: true,
+  areas: [
+    # Here go the areas names
+  ]
