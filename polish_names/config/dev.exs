@@ -5,6 +5,7 @@ config :polish_names, PolishNames.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
+  port: "8011",
   database: "polish_names_dev",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
