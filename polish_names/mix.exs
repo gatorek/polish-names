@@ -48,7 +48,9 @@ defmodule PolishNames.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:hammox, "~> 0.2", only: :test},
-      {:modular, "~> 0.3"}
+      {:modular, "~> 0.3"},
+      {:httpoison, "~> 1.8"},
+      {:nimble_csv, "~> 1.1.0"}
     ]
   end
 

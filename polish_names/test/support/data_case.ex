@@ -28,6 +28,8 @@ defmodule PolishNames.DataCase do
   end
 
   setup tags do
+    Modular.AreaAccess.install_stubs()
+
     pid = Ecto.Adapters.SQL.Sandbox.start_owner!(PolishNames.Repo, shared: not tags[:async])
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
     :ok

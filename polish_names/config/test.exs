@@ -30,5 +30,5 @@ config :phoenix, :plug_init_mode, :runtime
 config :modular,
   area_mocking_enabled: true,
   areas: [
-    # Here go the areas names
+    PolishNames.APIClient
   ]
