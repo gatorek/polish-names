@@ -1,4 +1,4 @@
-defmodule PolishNames.APIClient.HttpClient do
+defmodule PolishNames.Generator.APIClient do
   @moduledoc false
 
   use HTTPoison.Base

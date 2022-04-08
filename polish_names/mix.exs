@@ -50,7 +50,8 @@ defmodule PolishNames.MixProject do
       {:hammox, "~> 0.2", only: :test},
       {:modular, "~> 0.3"},
       {:httpoison, "~> 1.8"},
-      {:nimble_csv, "~> 1.1.0"}
+      {:nimble_csv, "~> 1.1.0"},
+      {:timex, "~> 3.0"}
     ]
   end
 
