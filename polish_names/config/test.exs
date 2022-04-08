@@ -30,5 +30,6 @@ config :phoenix, :plug_init_mode, :runtime
 config :modular,
   area_mocking_enabled: true,
   areas: [
-    PolishNames.Generator
+    PolishNames.Generator,
+    PolishNames.Person
   ]

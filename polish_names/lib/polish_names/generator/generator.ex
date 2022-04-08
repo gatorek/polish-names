@@ -31,7 +31,7 @@ defmodule PolishNames.Generator do
   @callback call(gender, datatype) :: [name]
 
   @doc """
-    Import random records into database
+    Generates random person records
   """
   @callback generate(count) :: [person]
 end
