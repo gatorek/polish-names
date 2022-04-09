@@ -6,6 +6,9 @@ defmodule PolishNamesWeb.PersonController do
   alias PolishNames.Person, as: PersonBehavior
   alias PolishNames.Schema.Person
 
+  @ordering ~w/name surname gender birth_date/
+  @genders ~w/female male/
+
   def import(conn, _params) do
     case PersonBehavior.impl().import() do
       :ok ->
@@ -20,9 +23,14 @@ defmodule PolishNamesWeb.PersonController do
     end
   end
 
-  def index(conn, _params) do
-    persons = PersonBehavior.impl().list()
-    render(conn, "index.html", persons: persons)
+  def index(conn, index_params) do
+    with {:ok, params} <- parse_index_params(index_params),
+         persons <- PersonBehavior.impl().list(params) do
+      render(conn, "index.html", persons: persons, params: params)
+    else
+      {:error, :invalid_parameter} ->
+        error_invalid_params(conn)
+    end
   end
 
   def new(conn, _params) do
@@ -113,11 +121,52 @@ defmodule PolishNamesWeb.PersonController do
     params
     |> Enum.reduce_while(%{}, fn {key, val}, acc ->
       case key do
-        "name" -> {:cont, Map.put(acc, :name, val)}
-        "surname" -> {:cont, Map.put(acc, :surname, val)}
-        "gender" -> {:cont, Map.put(acc, :gender, val)}
-        "birth_date" -> {:cont, Map.put(acc, :birth_date, val)}
-        _ -> {:halt, {:error, :invalid_parameter}}
+        "name" ->
+          {:cont, Map.put(acc, :name, val)}
+
+        "surname" ->
+          {:cont, Map.put(acc, :surname, val)}
+
+        "gender" when val in @genders ->
+          {:cont, Map.put(acc, :gender, String.to_atom(val))}
+
+        "birth_date" ->
+          {:cont, Map.put(acc, :birth_date, Date.from_iso8601!(val))}
+
+        _ ->
+          {:halt, {:error, :invalid_parameter}}
+      end
+    end)
+    |> case do
+      {:error, :invalid_parameter} -> {:error, :invalid_parameter}
+      params -> {:ok, params}
+    end
+  end
+
+  defp parse_index_params(params) do
+    params
+    |> Enum.reduce_while(%{}, fn {key, val}, acc ->
+      case key do
+        "sort" when val in @ordering ->
+          {:cont, Map.put(acc, :sort, String.to_atom(val))}
+
+        "name" ->
+          {:cont, Map.put(acc, :name, val)}
+
+        "surname" ->
+          {:cont, Map.put(acc, :surname, val)}
+
+        "gender" when val in @genders ->
+          {:cont, Map.put(acc, :gender, String.to_atom(val))}
+
+        "date_from" ->
+          {:cont, Map.put(acc, :date_from, Date.from_iso8601!(val))}
+
+        "date_to" ->
+          {:cont, Map.put(acc, :date_to, Date.from_iso8601!(val))}
+
+        _ ->
+          {:halt, {:error, :invalid_parameter}}
       end
     end)
     |> case do

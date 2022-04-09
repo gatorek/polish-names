@@ -7,7 +7,7 @@ defmodule PolishNames.Person.Impl do
   defdelegate import(), to: PolishNames.Person.PersonManagement
 
   @impl true
-  defdelegate list(), to: PolishNames.Person.PersonQuerying
+  defdelegate list(params \\ %{}), to: PolishNames.Person.PersonQuerying
 
   @impl true
   defdelegate get(id), to: PolishNames.Person.PersonQuerying

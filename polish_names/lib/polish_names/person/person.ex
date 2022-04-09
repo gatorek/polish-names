@@ -27,6 +27,15 @@ defmodule PolishNames.Person do
           optional(:birth_date) => Date.t()
         }
 
+  @type list_params :: %{
+          optional(:name) => String.t(),
+          optional(:surname) => String.t(),
+          optional(:gender) => :male | :female,
+          optional(:date_from) => Date.t(),
+          optional(:date_to) => Date.t(),
+          optional(:sort) => :name | :surname | :gender | :birth_date
+        }
+
   @doc """
     Mass import person records into database
   """
@@ -35,6 +44,7 @@ defmodule PolishNames.Person do
   @doc """
     Returns persons list
   """
+  @callback list(list_params) :: [Person.t()]
   @callback list() :: [Person.t()]
 
   @doc """

@@ -10,8 +10,20 @@ defmodule PolishNamesWeb.PersonControllerTest do
     surname: "NIMFA"
   }
 
+  @create_params %{
+    birth_date: "1999-09-09",
+    gender: "female",
+    name: "EUZEBIA",
+    surname: "NIMFA"
+  }
+
   @update_attrs %{
     gender: :female,
+    name: "AFANAZJA"
+  }
+
+  @update_params %{
+    gender: "female",
     name: "AFANAZJA"
   }
 
@@ -28,12 +40,43 @@ defmodule PolishNamesWeb.PersonControllerTest do
       Hammox.expect(
         PolishNames.Person.impl(),
         :list,
-        fn -> [@person] end
+        fn _ -> [@person] end
       )
 
       conn = get(conn, Routes.person_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Persons"
       assert html_response(conn, 200) =~ "ALOJZY"
+    end
+
+    test "filters results", %{conn: conn} do
+      input_params = %{
+        "sort" => "name",
+        "name" => "adam",
+        "surname" => "asnyk",
+        "gender" => "male",
+        "date_from" => "2000-01-01",
+        "date_to" => "2000-01-02"
+      }
+
+      Hammox.expect(
+        PolishNames.Person.impl(),
+        :list,
+        fn params ->
+          assert params == %{
+                   sort: :name,
+                   name: "adam",
+                   surname: "asnyk",
+                   gender: :male,
+                   date_from: ~D/2000-01-01/,
+                   date_to: ~D/2000-01-02/
+                 }
+
+          [@person]
+        end
+      )
+
+      conn = get(conn, Routes.person_path(conn, :index, input_params))
+      assert html_response(conn, 200) =~ "Listing Persons"
     end
   end
 
@@ -63,7 +106,7 @@ defmodule PolishNamesWeb.PersonControllerTest do
         end
       )
 
-      conn = post(conn, Routes.person_path(conn, :create), person: @create_attrs)
+      conn = post(conn, Routes.person_path(conn, :create), person: @create_params)
 
       assert %{id: "11"} = redirected_params(conn)
       assert redirected_to(conn) == Routes.person_path(conn, :show, 11)
@@ -126,17 +169,13 @@ defmodule PolishNamesWeb.PersonControllerTest do
         :update,
         fn person, params ->
           assert person == @person
-
-          assert params == %{
-                   name: "AFANAZJA",
-                   gender: :female
-                 }
+          assert params == @update_attrs
 
           {:ok, %{@person | name: "AFANAZJA", gender: :female}}
         end
       )
 
-      conn = put(conn, Routes.person_path(conn, :update, 13), person: @update_attrs)
+      conn = put(conn, Routes.person_path(conn, :update, 13), person: @update_params)
       assert redirected_to(conn) == Routes.person_path(conn, :show, 13)
     end
 
