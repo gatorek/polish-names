@@ -5,10 +5,18 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Surname</th>
-      <th>Gender</th>
-      <th>Birth date</th>
+      <th>
+        <span><%= link "Name", to: Routes.person_path(@conn, :index, Map.put(@params, :sort, "name")) %></span>
+      </th>
+      <th>
+        <span><%= link "Surname", to: Routes.person_path(@conn, :index, Map.put(@params, :sort, "surname")) %></span>
+      </th>
+      <th>
+        <span><%= link "Gender", to: Routes.person_path(@conn, :index, Map.put(@params, :sort, "gender")) %></span>
+      </th>
+      <th>
+        <span><%= link "Birth date", to: Routes.person_path(@conn, :index, Map.put(@params, :sort, "birth_date")) %></span>
+      </th>
 
       <th></th>
     </tr>

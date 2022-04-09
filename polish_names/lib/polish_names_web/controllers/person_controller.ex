@@ -26,7 +26,7 @@ defmodule PolishNamesWeb.PersonController do
   def index(conn, index_params) do
     with {:ok, params} <- parse_index_params(index_params),
          persons <- PersonBehavior.impl().list(params) do
-      render(conn, "index.html", persons: persons, params: params)
+      render(conn, "index.html", persons: persons, params: stringify(params))
     else
       {:error, :invalid_parameter} ->
         error_invalid_params(conn)
@@ -180,5 +180,13 @@ defmodule PolishNamesWeb.PersonController do
       {id, ""} -> {:ok, id}
       _ -> {:error, :invalid_parameter}
     end
+  end
+
+  defp stringify(params) do
+    params
+    |> Enum.map(fn {key, val} ->
+      {key, to_string(val)}
+    end)
+    |> Enum.into(%{})
   end
 end
