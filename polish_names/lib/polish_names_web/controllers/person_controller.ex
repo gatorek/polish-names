@@ -40,7 +40,8 @@ defmodule PolishNamesWeb.PersonController do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
 
-      {:error, :invalid_parameter} -> error_invalid_params(conn)
+      {:error, :invalid_parameter} ->
+        error_invalid_params(conn)
     end
   end
 
@@ -62,8 +63,8 @@ defmodule PolishNamesWeb.PersonController do
 
   def update(conn, %{"id" => id, "person" => person_params}) do
     with {:ok, id} <- parse_id(id),
-      {:ok, params} <- parse_person_params(person_params),
-      {:ok, person} <- PersonBehavior.impl().get(id) do
+         {:ok, params} <- parse_person_params(person_params),
+         {:ok, person} <- PersonBehavior.impl().get(id) do
       case PersonBehavior.impl().update(person, params) do
         {:ok, person} ->
           conn
@@ -75,7 +76,6 @@ defmodule PolishNamesWeb.PersonController do
       end
     else
       {:error, _} -> error_not_found(conn)
-
     end
   end
 

@@ -126,10 +126,11 @@ defmodule PolishNamesWeb.PersonControllerTest do
         :update,
         fn person, params ->
           assert person == @person
+
           assert params == %{
-            name: "AFANAZJA",
-            gender: :female
-          }
+                   name: "AFANAZJA",
+                   gender: :female
+                 }
 
           {:ok, %{@person | name: "AFANAZJA", gender: :female}}
         end
