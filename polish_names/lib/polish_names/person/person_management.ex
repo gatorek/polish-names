@@ -15,4 +15,24 @@ defmodule PolishNames.Person.PersonManagement do
         :error
     end
   end
+
+  def create(attrs \\ %{}) do
+    %Person{}
+    |> Person.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update(%Person{} = person, attrs) do
+    person
+    |> Person.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete(%Person{} = person) do
+    Repo.delete(person)
+  end
+
+  def change(%Person{} = person, attrs \\ %{}) do
+    Person.changeset(person, attrs)
+  end
 end
