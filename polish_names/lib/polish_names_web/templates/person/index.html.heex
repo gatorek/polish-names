@@ -1,5 +1,7 @@
 <h1>Listing Persons</h1>
 
+<span><%= link "Import", to: Routes.person_path(@conn, :import), method: :post, data: [confirm: "Are you sure? It will wipe all existing data!"] %></span>
+
 <table>
   <thead>
     <tr>

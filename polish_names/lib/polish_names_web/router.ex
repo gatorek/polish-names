@@ -17,9 +17,8 @@ defmodule PolishNamesWeb.Router do
   scope "/", PolishNamesWeb do
     pipe_through :browser
 
-    resources "/", PersonController do
-      post "/import", PersonController, :import
-    end
+    resources "/", PersonController
+    post "/import", PersonController, :import
   end
 
   # Other scopes may use custom stacks.
