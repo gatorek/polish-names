@@ -7,6 +7,7 @@ ENV APP_SRC=polish_names/
 WORKDIR $APP_HOME
 
 COPY $APP_SRC $APP_HOME/
+COPY .env $APP_HOME/.env
 
 RUN apk add --update bash openssl postgresql-client
 
