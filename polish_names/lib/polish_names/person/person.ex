@@ -72,4 +72,9 @@ defmodule PolishNames.Person do
   """
   @callback change(Person.t(), person_attrs) :: Ecto.Changeset.t()
   @callback change(Person.t()) :: Ecto.Changeset.t()
+
+  @doc """
+    Returns persons list as CSV
+  """
+  @callback csv_list() :: String.t()
 end

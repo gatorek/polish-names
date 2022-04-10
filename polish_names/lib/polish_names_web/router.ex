@@ -17,6 +17,7 @@ defmodule PolishNamesWeb.Router do
   scope "/", PolishNamesWeb do
     pipe_through :browser
 
+    get "/export", PersonController, :export
     resources "/", PersonController
     post "/import", PersonController, :import
   end

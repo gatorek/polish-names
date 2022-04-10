@@ -5,6 +5,16 @@ defmodule PolishNames.PersonQueryingTest do
 
   import PolishNames.PersonFixtures
 
+  alias PolishNames.Schema.Person
+
+  @person %Person{
+    id: 13,
+    name: "ALOJZY",
+    surname: "BĄBEL",
+    gender: :male,
+    birth_date: ~D/1961-07-18/
+  }
+
   describe "list/0" do
     test "returns all persons" do
       list =
@@ -77,6 +87,24 @@ defmodule PolishNames.PersonQueryingTest do
 
       assert get.(person.id) == {:ok, person}
       assert get.(person.id + 1) == {:error, :not_found}
+    end
+  end
+
+  describe "export/0" do
+    test "returns persons as CSV" do
+      Hammox.expect(
+        PolishNames.Person.impl(),
+        :list,
+        fn -> [@person] end
+      )
+
+      csv_list =
+        Hammox.protect(
+          {PolishNames.Person.impl(), :csv_list, 0},
+          PolishNames.Person
+        )
+
+      assert "1961-07-18;male;ALOJZY;BĄBEL\n" == csv_list.()
     end
   end
 end

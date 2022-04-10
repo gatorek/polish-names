@@ -2,6 +2,8 @@
 
 <span><%= link "Import", to: Routes.person_path(@conn, :import), method: :post, data: [confirm: "Are you sure? It will wipe all existing data!"] %></span>
 
+<span><%= link "Export", to: Routes.person_path(@conn, :export) %></span>
+
 <table>
   <thead>
     <tr>

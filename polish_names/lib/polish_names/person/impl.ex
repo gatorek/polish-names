@@ -23,4 +23,7 @@ defmodule PolishNames.Person.Impl do
 
   @impl true
   defdelegate change(person, attr \\ %{}), to: PolishNames.Person.PersonManagement
+
+  @impl true
+  defdelegate csv_list(), to: PolishNames.Person.PersonQuerying
 end

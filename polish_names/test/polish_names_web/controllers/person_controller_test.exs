@@ -244,4 +244,24 @@ defmodule PolishNamesWeb.PersonControllerTest do
       assert get_flash(conn, :error) == "Person not found."
     end
   end
+
+  describe "export" do
+    test "exports all persons to csv", %{conn: conn} do
+      Hammox.expect(
+        PolishNames.Person.impl(),
+        :csv_list,
+        fn ->
+          """
+            male;1961-07-18;ALOJZY;BĄBEL
+            female;1999-09-09;EUZEBIA;NIMFA
+          """
+        end
+      )
+
+      conn = get(conn, Routes.person_path(conn, :export))
+
+      assert response_content_type(conn, :csv) == "application/csv"
+      assert response(conn, 200) =~ "ALOJZY;"
+    end
+  end
 end

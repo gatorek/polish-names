@@ -101,6 +101,17 @@ defmodule PolishNamesWeb.PersonController do
     end
   end
 
+  def export(conn, _params) do
+    persons = PersonBehavior.impl().csv_list()
+
+    send_download(
+      conn,
+      {:binary, persons},
+      content_type: "application/csv",
+      filename: "export.csv"
+    )
+  end
+
   defp error_not_found(conn) do
     conn
     |> put_flash(:error, "Person not found.")

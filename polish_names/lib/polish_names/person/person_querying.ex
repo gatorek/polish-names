@@ -1,3 +1,5 @@
+NimbleCSV.define(PersonCSVParser, separator: ";", escape: "\"")
+
 defmodule PolishNames.Person.PersonQuerying do
   alias PolishNames.Repo
   alias PolishNames.Schema.Person
@@ -16,6 +18,13 @@ defmodule PolishNames.Person.PersonQuerying do
       nil -> {:error, :not_found}
       person -> {:ok, person}
     end
+  end
+
+  def csv_list() do
+    PolishNames.Person.impl().list()
+    |> Enum.map(&structs_to_lists/1)
+    |> PersonCSVParser.dump_to_iodata()
+    |> IO.iodata_to_binary()
   end
 
   defp filter(query, params) do
@@ -58,4 +67,12 @@ defmodule PolishNames.Person.PersonQuerying do
   end
 
   defp sort(query, _), do: query
+
+  def structs_to_lists(data) do
+    data
+    |> Map.from_struct()
+    |> Map.delete(:__meta__)
+    |> Map.delete(:id)
+    |> Map.values()
+  end
 end
