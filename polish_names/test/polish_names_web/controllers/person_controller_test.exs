@@ -78,6 +78,29 @@ defmodule PolishNamesWeb.PersonControllerTest do
       conn = get(conn, Routes.person_path(conn, :index, input_params))
       assert html_response(conn, 200) =~ "Listing Persons"
     end
+
+    test "does not filter when empty params values", %{conn: conn} do
+      input_params = %{
+        "sort" => "",
+        "name" => "",
+        "surname" => "",
+        "gender" => "",
+        "date_from" => "",
+        "date_to" => ""
+      }
+
+      Hammox.expect(
+        PolishNames.Person.impl(),
+        :list,
+        fn params ->
+          assert params == %{}
+
+          [@person]
+        end
+      )
+
+      get(conn, Routes.person_path(conn, :index, input_params))
+    end
   end
 
   describe "new person" do

@@ -4,6 +4,36 @@
 
 <span><%= link "Export", to: Routes.person_path(@conn, :export) %></span>
 
+<h2>Search form</h2>
+<%= form_for @conn, Routes.person_path(@conn, :index), [method: :get], fn f -> %>
+
+  <%= label f, :name %>
+  <%= text_input f, :name %>
+  <%= error_tag f, :name %>
+
+  <%= label f, :surname %>
+  <%= text_input f, :surname %>
+  <%= error_tag f, :surname %>
+
+  <%= label f, :gender %>
+  <%= select f, :gender, ["", "male", "female"] %>
+  <%= error_tag f, :gender %>
+
+  <%= label f, :date_from %>
+  <%= date_input f, :date_from %>
+  <%= error_tag f, :date_from %>
+
+  <%= label f, :date_to %>
+  <%= date_input f, :date_to %>
+  <%= error_tag f, :date_to %>
+
+  <div>
+    <%= submit "Search" %>
+  </div>
+
+<% end %>
+
+
 <table>
   <thead>
     <tr>

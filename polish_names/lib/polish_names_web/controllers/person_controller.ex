@@ -158,6 +158,9 @@ defmodule PolishNamesWeb.PersonController do
     params
     |> Enum.reduce_while(%{}, fn {key, val}, acc ->
       case key do
+        _ when val == "" ->
+          {:cont, acc}
+
         "sort" when val in @ordering ->
           {:cont, Map.put(acc, :sort, String.to_atom(val))}
 
@@ -171,10 +174,10 @@ defmodule PolishNamesWeb.PersonController do
           {:cont, Map.put(acc, :gender, String.to_atom(val))}
 
         "date_from" ->
-          {:cont, Map.put(acc, :date_from, Date.from_iso8601!(val))}
+          {:cont, put_parsed_date(acc, :date_from, val)}
 
         "date_to" ->
-          {:cont, Map.put(acc, :date_to, Date.from_iso8601!(val))}
+          {:cont, put_parsed_date(acc, :date_to, val)}
 
         _ ->
           {:halt, {:error, :invalid_parameter}}
@@ -183,6 +186,13 @@ defmodule PolishNamesWeb.PersonController do
     |> case do
       {:error, :invalid_parameter} -> {:error, :invalid_parameter}
       params -> {:ok, params}
+    end
+  end
+
+  defp put_parsed_date(acc, key, date_string) do
+    case Date.from_iso8601(date_string) do
+      {:error, :invalid_format} -> acc
+      {:ok, date} -> Map.put(acc, key, date)
     end
   end
 

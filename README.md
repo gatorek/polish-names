@@ -7,7 +7,7 @@ App will be available at `localhost:8012`
 
 # TODO
 - [x] fix date setting on the edit form
-- [ ] add search form (the search works now by manual adding parameters to URL - eg `name=ada`)
+- [x] add search form (the search works now by manual adding parameters to URL - eg `name=ada`)
 - [ ] add tests for failed paths in controller
 - [ ] wrap import into transaction
 - [ ] add error handling in API Client
